@@ -1,9 +1,24 @@
 const express = require('express');
-const port = 8000;
 const app = express();
+const port = 8000;
+const bodyParser = require('body-parser');
+const expressLayouts = require('express-ejs-layouts');
 
 // use express router
+
+app.use(expressLayouts);
+// extract style and scripts from sub pages into the layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
 app.use('/', require('./routes'));
+
+// Initializing DB
+const db = require('./config/mongoose');
+const User = require('./models/user');
+
+// importing static files
+app.use(express.static('./assets'));
 
 // set up the view engine
 app.set("view engine", "ejs");
